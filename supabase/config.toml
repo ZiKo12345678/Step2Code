@@ -1,0 +1,7 @@
+project_id = "iursbpcescgtgkupufsg"
+
+[functions.check-solution]
+verify_jwt = true
+
+[functions.ai-judge]
+verify_jwt = true
