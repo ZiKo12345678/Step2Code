@@ -5,9 +5,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLeaderboard } from "@/hooks/useProfile";
+import { useState } from "react";
 
 const Leaderboard = () => {
-  const { data: users, isLoading } = useLeaderboard();
+  const [activeTab, setActiveTab] = useState<"all" | "month" | "week">("all");
+  const { data: users, isLoading } = useLeaderboard(activeTab);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -68,14 +70,14 @@ const Leaderboard = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="all" className="max-w-4xl mx-auto">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "all" | "month" | "week")} className="max-w-4xl mx-auto">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="all">Все время</TabsTrigger>
             <TabsTrigger value="month">Месяц</TabsTrigger>
             <TabsTrigger value="week">Неделя</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-6">
+          <TabsContent value={activeTab} className="space-y-6">
             {isLoading ? (
               <p className="text-center text-muted-foreground">Загрузка...</p>
             ) : (
@@ -152,18 +154,6 @@ const Leaderboard = () => {
                 )}
               </>
             )}
-          </TabsContent>
-
-          <TabsContent value="month">
-            <p className="text-center text-muted-foreground py-12">
-              Статистика за месяц скоро появится
-            </p>
-          </TabsContent>
-
-          <TabsContent value="week">
-            <p className="text-center text-muted-foreground py-12">
-              Статистика за неделю скоро появится
-            </p>
           </TabsContent>
         </Tabs>
       </div>
